@@ -52,7 +52,7 @@ CALL :TDRDELAY
 CALL :7Z
 CALL :CHECKRUNNING
 CALL :SETUP
-IF EPICERROR EQU 1 GOTO :EXIT
+IF !EPICERROR! EQU 1 GOTO :EXIT
 CALL :MENU
 GOTO :EXIT
 
@@ -159,22 +159,21 @@ echo %mINFO%%cGREEN%Unreal Editor is NOT running. *GOOD*%cReset%
 EXIT /B 0
 
 :BACKUP
-ECHO Lightmass backup procedure in progress...
-ECHO.
 IF EXIST !pInstallDir!\Engine\Binaries\DotNET\ProgressReporter.exe (
 	ECHO.
 	ECHO %mERROR%%cRED%GPU Lightmass is installed. Clean backup not possible.%cReset%
 	ECHO.
 	CHOICE /m "Do you want to force backup anyway? (Useful if you just updated Unreal and had GPULightmass installed)."
-	IF !ERRORLEVEL! EQU 1 GOTO :FORCED
-	ECHO %mERROR%%cRED%User canceled, skiping backup%cReset%
-	EXIT /B
+	IF !ERRORLEVEL! EQU 1 (GOTO :FORCED) ELSE (EXIT /B 1)
 )
 GOTO :BACKINGUP
 :FORCED
 ECHO Performing FORCED BACKUP...
+GOTO :STARTBACKUP
 :BACKINGUP
+ECHO Lightmass backup procedure in progress...
 ECHO.
+:STARTBACKUP
 ECHO %mINFO%%cSoft%Performing Lightmass BACKUP%cReset%
 set InstallVersion=CPULightmass-%UnrealVersion%.zip
 if exist listfile.txt del listfile.txt /Q
@@ -194,22 +193,23 @@ echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Serialization.dll >> li
 echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Sockets.dll >> listfile.txt
 echo !pInstallDir!\Engine\Binaries\Win64\UE4Editor-UnrealEd.dll >> listfile.txt
 7za a %InstallVersion% @listfile.txt
-del listfile.txt /Q
+del listfile.txt /Q >nul
 
-set datestr=%date:~10,4%-%date:~7,2%-%date:~4,2%
-Set backupfile=Lightmass-Backup-%UnrealVersion%-%datestr%.zip
+REM set _datestr=%date:~10,4%-%date:~7,2%-%date:~4,2%
+set _datestr=%date:/=%
+Set _backupfile=Lightmass-Backup-%UnrealVersion%-%_datestr%.zip
 
-IF EXIST !backupfile! (
+IF EXIST !_backupfile! (
 	ECHO.
-	ECHO %mWARN%%cRED%There is currently a !backupfile! file in the current folder.%cReset%
+	ECHO %mWARN%%cRED%There is currently a !_backupfile! file in the current folder.%cReset%
 	ECHO.
 	ECHO This is optional. You can still recover CPU Lightmass from !InstallVersion!
 	ECHO.
 	CHOICE /c yn /m "Do you want to overrite your current Lightmass Backup?"
 	IF !ERRORLEVEL! NEQ 1 EXIT /B 1
 )
-copy !InstallVersion! !backupfile!
-EXIT /B
+copy !InstallVersion! !_backupfile! >nul
+EXIT /B 0
 
 :MENU
 REM TO DO: CHECK VERSION Installed
