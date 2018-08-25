@@ -11,7 +11,21 @@ set pExtreme=GPULightmassIntegration-4.20.1-Extreme.zip
 
 REM URLS can be modified
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
-set uGPULightmass=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
+REM URLS can be modified
+set u7ZIP=https://www.7-zip.org/a/7za920.zip
+set uGPULightmass4191=https://www.dropbox.com/sh/3issyqm20wb08ts/AAAtbdIywQm7Wg_af6eEbmKRa?dl=1
+set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0Km6dBe-i_a?dl=1
+set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
+set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
+set uGPULightmass=%uGPULightmass4202%
+REM TDR Settings
+
+set hGPU4191=
+set hGPU4192=
+set hGPU4201=
+set hGPU4202=
+set hCPU4201=
+set hCPU4202=
 
 REM TDR Settings
 set iTDRValue=300
@@ -25,7 +39,7 @@ REM ...................................................................
 REM DO NOT CHANGE ANYTHING FROM HERE UNLESS YOU KNOW WHAT YOU ARE DOING
 REM ...................................................................
 
-set sScriptVersion=v0.2.1
+set sScriptVersion=v0.3
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
