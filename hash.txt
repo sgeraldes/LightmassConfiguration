@@ -1,46 +1,32 @@
- 
- 
 UnrealVersion=4.19 
- 
-4.19:UE4Editor-UnrealEd.dll::a024c52cfddb8ed7d4409c1b276343cc 
- 
-4.19:GPULightmassKernel.dll::e5d0a73cd8e7c30469dc781ea9db66c6 
+4.19:UE4Editor-UnrealEd.dll:CPU:a024c52cfddb8ed7d4409c1b276343cc 
  
 UnrealVersion=4.20 
- 
-4.20:UE4Editor-UnrealEd.dll::4b8ac44664a87b3e922ad9a77d4d0a69 
-D:\Epic Games\UE_4.20\Engine\Binaries\Win64\GPULightmassKernel.dllFILE NOT FOUND 
+4.20.2:UE4Editor-UnrealEd.dll:CPU:9701ff972fba9bb250b7085f016069a6
  
 UnrealVersion=4.19.1 
- 
-4.19.1:UE4Editor-UnrealEd.dll:FastPreview:d5789ceabb44114a7f8d96d9b091ca43 
- 
-4.19.1:GPULightmassKernel.dll:FastPreview:06524fe7cefbc81266145e7735b14dcf 
- 
-4.19.1:GPULightmassKernel.dll:MediumQuality:70c26ccb4c5a3d925bfa3a2f259a8374 
+4.19.1:UE4Editor-UnrealEd.dll:GPU:d5789ceabb44114a7f8d96d9b091ca43
+4.19.1:GPULightmassKernel.dll:FastPreview:06524fe7cefbc81266145e7735b14dcf
+4.19.1:GPULightmassKernel.dll:MediumQuality:70c26ccb4c5a3d925bfa3a2f259a8374
+4.19.1:GPULightmassKernel.dll:UltraHigh:e5d0a73cd8e7c30469dc781ea9db66c6
  
 UnrealVersion=4.19.2 
  
-4.19.2:UE4Editor-UnrealEd.dll:FastPreview:5444c3b33cbe81aece57012dc3529a7f 
+4.19.2:UE4Editor-UnrealEd.dll:GPU:5444c3b33cbe81aece57012dc3529a7f
+4.19.2:GPULightmassKernel.dll:FastPreview:06524fe7cefbc81266145e7735b14dcf [DUPLICATE:[10]
+4.19.2:GPULightmassKernel.dll:MediumQuality:70c26ccb4c5a3d925bfa3a2f259a8374 [DUPLICATE:[11]
+4.19.2:GPULightmassKernel.dll:UltraHigh:e5d0a73cd8e7c30469dc781ea9db66c6 [DUPLICATE:[12]
  
 UnrealVersion=4.20.1 
- 
-4.20.1:GPULightmassKernel.dll:Extreme:b0e792aa6a302325bf9a0e0e8a14492a 
- 
-4.20.1:GPULightmassKernel.dll:FastPreview:aa8b5b8d6d59ba1c1e5807dc71cf081d 
- 
-4.20.1:GPULightmassKernel.dll:MediumQuality:43966b9276f0cda12770201bf3271bb8 
- 
-4.20.1:GPULightmassKernel.dll:UltraHigh:bc1e71019dc6074ea31099f692a94118 
+4.20.1:UE4Editor-UnrealEd.dll:GPU:4b8ac44664a87b3e922ad9a77d4d0a69
+4.20.1:GPULightmassKernel.dll:Extreme:b0e792aa6a302325bf9a0e0e8a14492a
+4.20.1:GPULightmassKernel.dll:FastPreview:aa8b5b8d6d59ba1c1e5807dc71cf081d
+4.20.1:GPULightmassKernel.dll:MediumQuality:43966b9276f0cda12770201bf3271bb8
+4.20.1:GPULightmassKernel.dll:UltraHigh:bc1e71019dc6074ea31099f692a94118
  
 UnrealVersion=4.20.2 
- 
-4.20.2:UE4Editor-UnrealEd.dll:Extreme:dcb8f8c59d98eb7b3520db82af0a3ae0 
- 
-4.20.2:GPULightmassKernel.dll:Extreme:77f574ffa01ce22c7fc8f13b94bcecb4 
- 
-4.20.2:GPULightmassKernel.dll:FastPreview:25c38c2052830cb45808649246f517eb 
- 
-4.20.2:GPULightmassKernel.dll:MediumQuality:d009fbaa625c6a704e5f687cd5d2595d 
- 
-4.20.2:GPULightmassKernel.dll:UltraHigh:5807710abb9ba36099e2765e4fd30559 
+4.20.2:UE4Editor-UnrealEd.dll:GPU:dcb8f8c59d98eb7b3520db82af0a3ae0
+4.20.2:GPULightmassKernel.dll:Extreme:77f574ffa01ce22c7fc8f13b94bcecb4
+4.20.2:GPULightmassKernel.dll:FastPreview:25c38c2052830cb45808649246f517eb
+4.20.2:GPULightmassKernel.dll:MediumQuality:d009fbaa625c6a704e5f687cd5d2595d
+4.20.2:GPULightmassKernel.dll:UltraHigh:5807710abb9ba36099e2765e4fd30559

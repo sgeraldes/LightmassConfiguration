@@ -38,8 +38,8 @@ set VALUE_NAME=InstalledDirectory
 CALL :GETINSTALLPATH
 CALL :Testing
 
-SET pUnrealEd=.\Engine\Binaries\Win64\UE4Editor-UnrealEd.dll
-SET pGPULightmass=.\Engine\Binaries\Win64\GPULightmassKernel.dll
+SET pathUnrealEd=\Engine\Binaries\Win64\UE4Editor-UnrealEd.dll
+SET pathGPULightmass=\Engine\Binaries\Win64\GPULightmassKernel.dll
 
 set UnrealVersion=4.19.1
 set uGPULightmass=%uGPULightmass4191%
@@ -61,7 +61,9 @@ set uGPULightmass=%uGPULightmass4202%
 CALL :DOWNLOAD
 CALL :UNZIP
 
-
+ECHO.
+ECHO ALL DONE. Have a good day!
+TIMEOUT 3 >NUL
 EXIT /B
 
 
@@ -79,8 +81,8 @@ echo %mINFO%[1mUnreal Engine Version %UnrealVersion% is installed in: %cReset%
 echo      - !pInstallDir!
 
 REM IF EXIST !pInstallDir!\Engine\Binaries\Win64\GPULightmassKernel.dll
-SET pUnrealEd=!pInstallDir!\Engine\Binaries\Win64\UE4Editor-UnrealEd.dll
-SET pGPULightmass=!pInstallDir!\Engine\Binaries\Win64\GPULightmassKernel.dll
+SET pUnrealEd=!pInstallDir!%pathUnrealEd%
+SET pGPULightmass=!pInstallDir!%pathGPULightmass%
 
 EXIT /B
 
@@ -120,13 +122,18 @@ EXIT /B
 
 :Test
 SET "_HASH="
+SET "_LINE="
 REM ECHO FILE: !pFileToCheck! >>test.txt
 FOR /F "tokens=*" %%a IN ('certutil -hashfile "!pFileToCheck!" MD5 ^| find /i /v "md5" ^| find /i /v "certutil"') DO (SET _HASH=%%a)
 IF DEFINED _HASH (
+	REM FOR /F "tokens=1 delims=:" %g IN ('find /c "dcb8f8c59d98eb7b3520db82af0a3ae0" test.txt ^>nul') DO (SET _LINE=%g)
 	find /c "!_HASH!" test.txt >nul
 	if !errorlevel! equ 1 (
 		ECHO. >>test.txt
 		ECHO !UnrealVersion!:!pFileToCheck:*Win64^\=!:!_Quality!:!_HASH! >>test.txt
+	) ELSE (
+		FOR /F "skip=2 tokens=1 delims=:" %%g IN ('find /n "!_HASH!" test.txt') DO (SET _LINE=%%g)
+		ECHO !UnrealVersion!:!pFileToCheck:*Win64^\=!:!_Quality!:!_HASH! [DUPLICATE:!_LINE:~0,-7!] >>test.txt
 	)
 ) ELSE (
 	ECHO !pFileToCheck!FILE NOT FOUND >>test.txt

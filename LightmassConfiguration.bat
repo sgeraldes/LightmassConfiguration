@@ -4,10 +4,10 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 :Variables
 REM Variables that can be modified bellow
 set UnrealVersion=4.20
-set pFastPreview=GPULightmassIntegration-4.20.1-FastPreview.zip
-set pMedium=GPULightmassIntegration-4.20.1-MediumQuality.zip
-set pUltraHigh=GPULightmassIntegration-4.20.1-UltraHigh.zip
-set pExtreme=GPULightmassIntegration-4.20.1-Extreme.zip
+set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
+set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
+set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
+set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
 
 REM URLS can be modified
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
@@ -18,14 +18,6 @@ set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0
 set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
 set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass=%uGPULightmass4202%
-REM TDR Settings
-
-set hGPU4191=
-set hGPU4192=
-set hGPU4201=
-set hGPU4202=
-set hCPU4201=
-set hCPU4202=
 
 REM TDR Settings
 set iTDRValue=300
@@ -51,6 +43,11 @@ SET cReset=[0m
 SET cRED=[31m
 SET cGREEN=[32m
 SET cSOFT=[90m
+SET cYellow=[93m
+SET cInverted=[7m
+
+SET pUnrealEd=\Engine\Binaries\Win64\UE4Editor-UnrealEd.dll
+SET pGPULightmass=\Engine\Binaries\Win64\GPULightmassKernel.dll
 
 REM REGISTRY SETTINGS
 set KEY_NAME=HKLM\Software\EpicGames\Unreal Engine\%UnrealVersion%
@@ -108,10 +105,17 @@ wmic path win32_VideoController get driverVersion,Name
 FOR /F "tokens=1*" %%a IN ('wmic path win32_VideoController get driverVersion^,Name ^| find "NVIDIA"') DO (SET _DRIVER=%%a)
 SET _DRIVER=%_DRIVER:.=%
 IF DEFINED _DRIVER (
-IF "%_DRIVER%" GEQ "%iMinDriverVersion%" (ECHO %mINFO%%cGREEN%Nvidia Driver version is %iMinDriverVersion:~5,3%.%iMinDriverVersion:~8,2% or greater ^(GOOD^)%cReset%) ELSE (ECHO %mINFO%%cGREEN%Nvidia Driver version is %_DRIVER:~5,3%.%_DRIVER:~8,2% %cReset% && ECHO %mERROR%%cRED%NVIDIA DRIVER NEEDS TO BE UPDATED TO %iMinDriverVersion:~5,3%.%iMinDriverVersion:~8,2% OR GREATER TO USE GPU LIGHTMASS.%cReset% && ECHO. && PAUSE)
+	IF "%_DRIVER%" GEQ "%iMinDriverVersion%" (
+		ECHO %mINFO%%cGREEN%Nvidia Driver version is %iMinDriverVersion:~5,3%.%iMinDriverVersion:~8,2% or greater ^(GOOD^)%cReset%
+	) ELSE (
+		ECHO %mINFO%%cGREEN%Nvidia Driver version is %_DRIVER:~5,3%.%_DRIVER:~8,2% %cReset%
+		ECHO %mERROR%%cRED%NVIDIA DRIVER NEEDS TO BE UPDATED TO %iMinDriverVersion:~5,3%.%iMinDriverVersion:~8,2% OR GREATER TO USE GPU LIGHTMASS.%cReset%
+		ECHO.
+		TIMEOUT 5
+	)
 ) ELSE (
-ECHO %mERROR%%cRED%CAN'T FIND NVIDIA DRIVER INFORMATION ^(CRITICAL^)%cReset%
-TIMEOUT 3 
+	ECHO %mERROR%%cRED%CAN'T FIND NVIDIA DRIVER INFORMATION ^(CRITICAL^)%cReset%
+	TIMEOUT 5
 )
 EXIT /B
 
@@ -129,7 +133,7 @@ echo %mINFO%[1mUnreal Engine Version %UnrealVersion% is installed in: %cReset%
 echo      - !pInstallDir!
 
 REM CHECK IF GPU LIGHTMASS IS INSTALLED
-IF EXIST !pInstallDir!\Engine\Binaries\Win64\GPULightmassKernel.dll (
+IF EXIST !pInstallDir!!pGPULightmass! (
 	ECHO %mINFO%%cGREEN%GPU Lightmass is Installed%cReset%
 	SET NOTINSTALLED=0
 ) ELSE (
@@ -149,13 +153,13 @@ IF EXIST CPULightmass-%UnrealVersion%.zip (
 )
 
 REM CHECK FOR SETUP FILES
-IF NOT EXIST GPULightmassIntegration-4.20.1-FastPreview.zip (
+IF NOT EXIST !pFastPreview! (
 	ECHO Downloading GPU Lightmass, this can take a while. Please wait...
 	powershell -Command "Invoke-WebRequest %uGPULightmass% -OutFile %UnrealVersion%.zip"
 	powershell -Command "Expand-Archive -LiteralPath %UnrealVersion%.zip -DestinationPath ."
 	IF !ERRORLEVEL! EQU 0 (del %UnrealVersion%.zip /q) ELSE (ECHO %mERROR%%cRED%ERROR DOWNLOADING. ERRORLEVEL: !ERRORLEVEL!%cReset%)
 	echo.
-	IF EXIST GPULightmassIntegration-4.20.1-FastPreview.zip (ECHO %mINFO%DOWNLOAD COMPLETE.) ELSE (ECHO %mERROR%%cRED%DOWNLOAD ERROR.%cReset%)
+	IF EXIST !pFastPreview! (ECHO %mINFO%DOWNLOAD COMPLETE.) ELSE (ECHO %mERROR%%cRED%DOWNLOAD ERROR.%cReset%)
 ) ELSE (
 	ECHO %mINFO%%cGREEN%GPULightmass is already downloaded.%cReset%
 )
@@ -227,19 +231,40 @@ EXIT /B 0
 
 :MENU
 REM TO DO: CHECK VERSION Installed
-REM FOR /F "skip=1 delims=" %%a IN ('certutil -hashfile "!pInstallDir!\Engine\Binaries\Win64\GPULightmassKernel.dll" MD5') DO (SET _HASH=%%a)
+REM FOR /F "skip=1 delims=" %%a IN ('certutil -hashfile "!pInstallDir!!pGPULightmass!" MD5') DO (SET _HASH=%%a)
 REM ECHO %_HASH%
+CALL :TestHash
+SET "_sCPU="
+SET "_sFast="
+SET "_sMedium="
+SET "_sHigh="
+SET "_sExtreme="
+SET _SELECTED=%cInverted%%cYellow%[SELECTED]%cReset%
+
+ECHO %mINFO%EDITOR HASH: !_EditorHash!
+
+IF [!_EDITORQuality!]==[CPU] (
+	SET _sCPU=%_SELECTED%
+)
+
+IF [!_EDITORQuality!]==[GPU] (
+	IF !_GPUQuality!==FastPreview SET _sFast=%_SELECTED%
+	IF !_GPUQuality!==MediumQuality SET _sMedium=%_SELECTED%
+	IF !_GPUQuality!==UltraHigh SET _sHigh=%_SELECTED%
+	IF !_GPUQuality!==Extreme SET _sExtreme=%_SELECTED%
+)
+
 ECHO.
 ECHO Choose the Lightmass version you would like to install:
 ECHO ------------------------------------------------------
 ECHO.
 IF !RUNNING! NEQ 1 (ECHO %cSoft%0 - Backup Current Lightmass%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be backup while UnrealEd is running [DISABLED]%cReset%)
-IF !RUNNING! NEQ 1 (ECHO 1 - RESTORE CPU Lightmass) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be restored until UnrealEd is closed [DISABLED]%cReset%)
-ECHO [97m2 - GPU Lightmass Fast Preview
-ECHO 3 - GPU Lightmass Medium Quality
-ECHO 4 - GPU Lightmass Ultra High Quality
-ECHO 5 - GPU Lightmass Extreme Quality[0m
-ECHO [93m6 - EXIT[0m
+IF !RUNNING! NEQ 1 (ECHO 1 - RESTORE CPU Lightmass !_sCPU!) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be restored until UnrealEd is closed !_sCPU! [DISABLED]%cReset%)
+ECHO %cStrong%2 - GPU Lightmass Fast Preview !_sFast!
+ECHO %cStrong%3 - GPU Lightmass Medium Quality !_sMedium!
+ECHO %cStrong%4 - GPU Lightmass Ultra High Quality !_sHigh!
+ECHO %cStrong%5 - GPU Lightmass Extreme Quality !_sExtreme!%cReset%
+ECHO %cYellow%6 - EXIT%cReset%
 ECHO.
 CHOICE /C:0123456 /M "Choose your option"
 IF !ERRORLEVEL! EQU 1 CALL :BACKUP && GOTO :MENU
@@ -320,6 +345,73 @@ ECHO.
 REG ADD %KEY_NAME_TDR% /v %VALUE_NAME_TDR% /t REG_DWORD /d %iTDRValue%
 if %ERRORLEVEL% EQU 0 ECHO %mWARN%%cGREEN%TDR Settings added successfully. %cRED%Please restart or log-off for changes to take effect%cReset%
 Exit /B
+
+:TestHash
+REM ECHO TESTING UnrealEd
+SET pFileToCheck=!pInstallDir!!pUnrealEd!
+SET "_HASH="
+SET "_FOUND="
+IF EXIST !pFileToCheck! (CALL :Test) ELSE (SET _EDITORQuality=NOT FOUND)
+IF DEFINED _HASH SET _EditorHash=!_HASH!
+IF DEFINED _FOUND (
+	SET _EDITORQuality=!_QUALITY: =!
+	REM ECHO %mINFO%EDITOR QUALITY: [!_QUALITY: =!]
+	SET _EDITORVersion=!_EDITOR: =!
+	REM ECHO %mINFO%EDITOR VERSION: [!_EDITOR: =!]
+) ELSE (
+	ECHO %mERROR%%cRED%CPU Lightmass Kernel version is unknown.%cReset%
+	IF NOT DEFINED _EDITORQuality SET _EDITORQuality=UNKNOWN
+	SET "_EDITORVersion="
+)
+REM ECHO TESTING GPULightmassKernel
+SET pFileToCheck=!pInstallDir!!pGPULightmass!
+SET "_HASH="
+SET "_FOUND="
+IF EXIST !pFileToCheck! (CALL :Test) ELSE (SET _GPUQuality=NOT FOUND)
+IF DEFINED _HASH SET _GPUHash=!_HASH!
+IF DEFINED _FOUND (
+	SET _GPUQuality=!_QUALITY: =!
+	REM ECHO %mINFO%GPU QUALITY: [!_QUALITY: =!]
+	SET _GPUVersion=!_GPU: =!
+	REM ECHO %mINFO%GPU VERSION: [!_GPU: =!]
+) ELSE (
+	REM ECHO %mERROR%CPU Lightmass Kernel version is unknown.
+	IF NOT DEFINED _GPUQuality SET _GPUQuality=UNKNOWN
+	SET "_GPUVersion="
+)
+REM TO DO: CHECKS (IF EDITOR QUALITY IS CPU AND GPU INSTALLED THEN DIRTY; IF EDITOR IS GPU AND GPU NOT FOUND THEN DIRTY; IF EDITOR IS GPU AND GPUQUALITY NOT EQU EDITORQUALITY THEN DIRTY)
+REM IF !_ENGINE!==!UnrealVersion! (ECHO TEST OK) ELSE (ECHO DIRTY INSTALL, ENGINE IS !_ENGINE! and VERSION IS !UnrealVersion!)
+
+EXIT /B
+
+:Test
+SET "_HASH="
+SET "_ENGINE="
+SET "_QUALITY="
+SET "_FOUND="
+SET "_EDITOR="
+SET "_GPU="
+IF NOT EXIST !pFileToCheck! ECHO %mERROR%!pFileToCheck! does not exist && EXIT /B 1
+ECHO.
+REM ECHO HASHING !pFileToCheck!...
+FOR /F "tokens=*" %%a IN ('certutil -hashfile "!pFileToCheck!" MD5 ^| find /i /v "md5" ^| find /i /v "certutil"') DO (SET _HASH=%%a)
+REM ECHO TESTING TOKENS for hash: !_HASH!
+IF DEFINED _HASH (
+	FOR /F "skip=2 tokens=*" %%a IN ('find "!_HASH!" hash.txt') DO (SET _FOUND=%%a)
+	if DEFINED _FOUND (
+		REM ECHO FOUND: !_FOUND!
+		FOR /F "tokens=1-4* delims=:" %%g IN ("!_FOUND!") DO (
+			SET _ENGINE=%%g
+			IF %%h==UE4Editor-UnrealEd.dll (SET _EDITOR=!_ENGINE: =!)
+			IF %%h==GPULightmassKernel.dll (SET _GPU=!_ENGINE: =!)
+			IF [%%j]==[] (SET _QUALITY=CPU) ELSE (SET _QUALITY=%%i)
+			SET _QUALITY=!_QUALITY: =!
+		)
+	)
+) ELSE (
+	REM ECHO !pFileToCheck!: FILE NOT FOUND
+)
+EXIT /B
 
 :WONTINSTALL
 ECHO %mERROR%%cRED%Can't install GPU if Unreal is running. Quit Unreal and install.%cReset%
