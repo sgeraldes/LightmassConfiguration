@@ -3,8 +3,8 @@ LightmassConfiguration is a script made for Unreal Engina 4 to allow to change f
 
 # Usage
 To use:
-- Simply download LightmassConfiguration.zip and decompress the .bat file to any folder (empty is better)
-- Double-click it, it will ask for admin permissions and do the rest, prompting you each step of the way
+- Simply download [LightmassConfiguration.zip](https://github.com/sgeraldes/LightmassConfiguration/archive/master.zip) and decompress to any folder (empty is better)
+- Double-click LightmassConfigurator.bat, it will ask for admin permissions and do the rest, including downloading GPU Lightmass to the proper folder, prompting you each step of the way
 
 # Background and use case
 I had to install GPU lightmass 4.20.1 on more than 10 computers, so I made a script that will perform a batch of checks and allow to change from GPU bake quality without the need to restart Unreal. It will also check quite a few other things. Hope it helps someone.
