@@ -8,10 +8,8 @@ set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
 set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
 set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
 set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
-set pUnified=GPULightmassIntegration-4.20.3-UnifiedSettings.zip
+set pUnified=GPULightmassIntegration-4.20.2-UnifiedSettings.zip
 
-REM URLS can be modified
-set u7ZIP=https://www.7-zip.org/a/7za920.zip
 REM URLS can be modified
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
 set uGPULightmass4191=https://www.dropbox.com/sh/3issyqm20wb08ts/AAAtbdIywQm7Wg_af6eEbmKRa?dl=1
@@ -19,7 +17,7 @@ set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0
 set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
 set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass4202u=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
-set uGPULightmass4203u=https://www.dropbox.com/s/yxa5dwkgyelfh6z/GPULightmassIntegration-4.20.3-UnifiedSettings.zip?dl=1
+set uGPULightmass4203u=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
 set uGPULightmass=%uGPULightmass4203u%
 
 REM TDR Settings
