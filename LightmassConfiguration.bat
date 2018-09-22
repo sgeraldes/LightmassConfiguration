@@ -69,7 +69,7 @@ GOTO :EXIT
 
 :UAC
 REM  --> Check for permissions
-net session >nul 2>&1
+fsutil dirty query %systemdrive% >nul
 REM --> If error flag set, we do not have admin.
 if '%errorlevel%' NEQ '0' (
     echo Requesting administrative privileges...
