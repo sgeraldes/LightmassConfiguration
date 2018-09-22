@@ -8,6 +8,7 @@ set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
 set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
 set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
 set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
+set pUnified=GPULightmassIntegration-4.20.3-UnifiedSettings.zip
 
 REM URLS can be modified
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
@@ -17,7 +18,9 @@ set uGPULightmass4191=https://www.dropbox.com/sh/3issyqm20wb08ts/AAAtbdIywQm7Wg_
 set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0Km6dBe-i_a?dl=1
 set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
 set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
-set uGPULightmass=%uGPULightmass4202%
+set uGPULightmass4202u=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
+set uGPULightmass4203u=https://www.dropbox.com/s/yxa5dwkgyelfh6z/GPULightmassIntegration-4.20.3-UnifiedSettings.zip?dl=1
+set uGPULightmass=%uGPULightmass4203u%
 
 REM TDR Settings
 set iTDRValue=300
@@ -153,13 +156,13 @@ IF EXIST CPULightmass-%UnrealVersion%.zip (
 )
 
 REM CHECK FOR SETUP FILES
-IF NOT EXIST !pFastPreview! (
+IF NOT EXIST !pUnified! (
 	ECHO Downloading GPU Lightmass, this can take a while. Please wait...
 	powershell -Command "Invoke-WebRequest %uGPULightmass% -OutFile %UnrealVersion%.zip"
 	powershell -Command "Expand-Archive -LiteralPath %UnrealVersion%.zip -DestinationPath ."
 	IF !ERRORLEVEL! EQU 0 (del %UnrealVersion%.zip /q) ELSE (ECHO %mERROR%%cRED%ERROR DOWNLOADING. ERRORLEVEL: !ERRORLEVEL!%cReset%)
 	echo.
-	IF EXIST !pFastPreview! (ECHO %mINFO%DOWNLOAD COMPLETE.) ELSE (ECHO %mERROR%%cRED%DOWNLOAD ERROR.%cReset%)
+	IF EXIST !pUnified! (ECHO %mINFO%DOWNLOAD COMPLETE.) ELSE (ECHO %mERROR%%cRED%DOWNLOAD ERROR.%cReset%)
 ) ELSE (
 	ECHO %mINFO%%cGREEN%GPULightmass is already downloaded.%cReset%
 )
@@ -195,29 +198,32 @@ ECHO.
 ECHO %mINFO%%cSoft%Performing Lightmass BACKUP%cReset%
 set InstallVersion=CPULightmass-%UnrealVersion%.zip
 if exist listfile.txt del listfile.txt /Q
-echo !pInstallDir!\Engine\Config\BaseLightmass.ini >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-SwarmInterface.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass.exe >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-ApplicationCore.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-BuildSettings.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Core.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-CoreUObject.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Json.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Messaging.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Networking.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Projects.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-SandboxFile.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Serialization.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UnrealLightmass-Sockets.dll >> listfile.txt
-echo !pInstallDir!\Engine\Binaries\Win64\UE4Editor-UnrealEd.dll >> listfile.txt
-7za a %InstallVersion% @listfile.txt
+echo Engine\Config\BaseLightmass.ini >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-SwarmInterface.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass.exe >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-ApplicationCore.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-BuildSettings.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Core.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-CoreUObject.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Json.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Messaging.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Networking.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Projects.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-SandboxFile.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Serialization.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Sockets.dll >> listfile.txt
+echo Engine\Binaries\Win64\UE4Editor-UnrealEd.dll >> listfile.txt
+SET ZIPPATH=%CD%
+PUSHD !pInstallDir!
+!ZIPPATH!\7za a !ZIPPATH!\!InstallVersion! @!ZIPPATH!\listfile.txt
+POPD
 del listfile.txt /Q >nul
 
 REM set _datestr=%date:~10,4%-%date:~7,2%-%date:~4,2%
 set _datestr=%date:/=%
 Set _backupfile=Lightmass-Backup-%UnrealVersion%-%_datestr%.zip
 
-IF EXIST !_backupfile! (
+IF EXIST "!_backupfile!" (
 	ECHO.
 	ECHO %mWARN%%cRED%There is currently a !_backupfile! file in the current folder.%cReset%
 	ECHO.
@@ -226,7 +232,7 @@ IF EXIST !_backupfile! (
 	CHOICE /c yn /m "Do you want to overrite your current Lightmass Backup?"
 	IF !ERRORLEVEL! NEQ 1 EXIT /B 1
 )
-copy !InstallVersion! !_backupfile! >nul
+copy "!InstallVersion!" "!_backupfile!" >nul
 EXIT /B 0
 
 :MENU
@@ -239,7 +245,8 @@ SET "_sFast="
 SET "_sMedium="
 SET "_sHigh="
 SET "_sExtreme="
-SET _SELECTED=%cInverted%%cYellow%[SELECTED]%cReset%
+SET "_sUnified="
+SET _SELECTED=%cInverted%%cYellow%[CURRENT]%cReset%
 
 ECHO %mINFO%EDITOR HASH: !_EditorHash!
 
@@ -252,6 +259,7 @@ IF [!_EDITORQuality!]==[GPU] (
 	IF !_GPUQuality!==MediumQuality SET _sMedium=%_SELECTED%
 	IF !_GPUQuality!==UltraHigh SET _sHigh=%_SELECTED%
 	IF !_GPUQuality!==Extreme SET _sExtreme=%_SELECTED%
+	IF !_GPUQuality!==Unified SET _sUnified=%_SELECTED%
 )
 
 ECHO.
@@ -264,16 +272,18 @@ ECHO %cStrong%2 - GPU Lightmass Fast Preview !_sFast!
 ECHO %cStrong%3 - GPU Lightmass Medium Quality !_sMedium!
 ECHO %cStrong%4 - GPU Lightmass Ultra High Quality !_sHigh!
 ECHO %cStrong%5 - GPU Lightmass Extreme Quality !_sExtreme!%cReset%
-ECHO %cYellow%6 - EXIT%cReset%
+ECHO %cStrong%6 - GPU Lightmass Unified Settings !_sUnified!%cReset%
+ECHO %cYellow%7 - EXIT%cReset%
 ECHO.
-CHOICE /C:0123456 /M "Choose your option"
+CHOICE /C:01234567 /M "Choose your option"
 IF !ERRORLEVEL! EQU 1 CALL :BACKUP && GOTO :MENU
 IF !ERRORLEVEL! EQU 2 CALL :CPU && GOTO :MENU
 IF !ERRORLEVEL! EQU 3 CALL :Fast && GOTO :MENU
 IF !ERRORLEVEL! EQU 4 CALL :Medium && GOTO :MENU
 IF !ERRORLEVEL! EQU 5 CALL :UltraHigh && GOTO :MENU
 IF !ERRORLEVEL! EQU 6 CALL :Extreme && GOTO :MENU
-IF !ERRORLEVEL! EQU 7 GOTO :EOF
+IF !ERRORLEVEL! EQU 7 CALL :Unified && GOTO :MENU
+IF !ERRORLEVEL! EQU 8 GOTO :EOF
 
 GOTO :MENU
 
@@ -304,6 +314,10 @@ GOTO INSTALL
 
 :Extreme
 set InstallVersion=%pExtreme%
+GOTO INSTALL
+
+:Unified
+set InstallVersion=%pUnified%
 GOTO INSTALL
 
 :INSTALL
@@ -355,9 +369,9 @@ IF EXIST !pFileToCheck! (CALL :Test) ELSE (SET _EDITORQuality=NOT FOUND)
 IF DEFINED _HASH SET _EditorHash=!_HASH!
 IF DEFINED _FOUND (
 	SET _EDITORQuality=!_QUALITY: =!
-	REM ECHO %mINFO%EDITOR QUALITY: [!_QUALITY: =!]
+	ECHO %mINFO%EDITOR QUALITY: [!_QUALITY: =!]
 	SET _EDITORVersion=!_EDITOR: =!
-	REM ECHO %mINFO%EDITOR VERSION: [!_EDITOR: =!]
+	ECHO %mINFO%EDITOR VERSION: [!_EDITOR: =!]
 ) ELSE (
 	ECHO %mERROR%%cRED%CPU Lightmass Kernel version is unknown.%cReset%
 	IF NOT DEFINED _EDITORQuality SET _EDITORQuality=UNKNOWN
@@ -371,9 +385,9 @@ IF EXIST !pFileToCheck! (CALL :Test) ELSE (SET _GPUQuality=NOT FOUND)
 IF DEFINED _HASH SET _GPUHash=!_HASH!
 IF DEFINED _FOUND (
 	SET _GPUQuality=!_QUALITY: =!
-	REM ECHO %mINFO%GPU QUALITY: [!_QUALITY: =!]
+	ECHO %mINFO%GPU QUALITY: [!_QUALITY: =!]
 	SET _GPUVersion=!_GPU: =!
-	REM ECHO %mINFO%GPU VERSION: [!_GPU: =!]
+	ECHO %mINFO%GPU VERSION: [!_GPU: =!]
 ) ELSE (
 	REM ECHO %mERROR%CPU Lightmass Kernel version is unknown.
 	IF NOT DEFINED _GPUQuality SET _GPUQuality=UNKNOWN

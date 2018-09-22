@@ -26,7 +26,13 @@ UnrealVersion=4.20.1
  
 UnrealVersion=4.20.2 
 4.20.2:UE4Editor-UnrealEd.dll:GPU:dcb8f8c59d98eb7b3520db82af0a3ae0
+4.20.2:UE4Editor-UnrealEd.dll:Unified:e3a464b9b128225ddbdf3f87537d6de0
 4.20.2:GPULightmassKernel.dll:Extreme:77f574ffa01ce22c7fc8f13b94bcecb4
 4.20.2:GPULightmassKernel.dll:FastPreview:25c38c2052830cb45808649246f517eb
 4.20.2:GPULightmassKernel.dll:MediumQuality:d009fbaa625c6a704e5f687cd5d2595d
 4.20.2:GPULightmassKernel.dll:UltraHigh:5807710abb9ba36099e2765e4fd30559
+
+UnrealVersion=4.20.3
+4.20.3:UE4Editor-UnrealEd.dll:CPU:32d1dafa387f085ba8f1238542ae6fea
+4.20.3:UE4Editor-UnrealEd.dll:GPU:f5d9c567f582b132309dbdecddb5c124 [Unified]
+4.20.2:GPULightmassKernel.dll:Unified:1d6a18bad15f183a5234a1660e08c107
