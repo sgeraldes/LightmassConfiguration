@@ -32,7 +32,7 @@ REM ...................................................................
 REM DO NOT CHANGE ANYTHING FROM HERE UNLESS YOU KNOW WHAT YOU ARE DOING
 REM ...................................................................
 
-set sScriptVersion=v0.3
+set sScriptVersion=v0.3.1
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
@@ -238,13 +238,20 @@ REM TO DO: CHECK VERSION Installed
 REM FOR /F "skip=1 delims=" %%a IN ('certutil -hashfile "!pInstallDir!!pGPULightmass!" MD5') DO (SET _HASH=%%a)
 REM ECHO %_HASH%
 CALL :TestHash
+SET "_Loop="
 SET "_sCPU="
 SET "_sFast="
 SET "_sMedium="
 SET "_sHigh="
 SET "_sExtreme="
 SET "_sUnified="
-SET _SELECTED=%cInverted%%cYellow%[CURRENT]%cReset%
+SET "_cCPU="
+SET "_cFast="
+SET "_cMedium="
+SET "_cHigh="
+SET "_cExtreme="
+SET "_cUnified="
+SET _SELECTED=%cInverted%%cYellow%[CURRENT]
 
 ECHO %mINFO%EDITOR HASH: !_EditorHash!
 
@@ -253,11 +260,11 @@ IF [!_EDITORQuality!]==[CPU] (
 )
 
 IF [!_EDITORQuality!]==[GPU] (
-	IF !_GPUQuality!==FastPreview SET _sFast=%_SELECTED%
-	IF !_GPUQuality!==MediumQuality SET _sMedium=%_SELECTED%
-	IF !_GPUQuality!==UltraHigh SET _sHigh=%_SELECTED%
-	IF !_GPUQuality!==Extreme SET _sExtreme=%_SELECTED%
-	IF !_GPUQuality!==Unified SET _sUnified=%_SELECTED%
+	IF !_GPUQuality!==FastPreview SET _sFast=%_SELECTED% && SET _cFast=%cInverted%
+	IF !_GPUQuality!==MediumQuality SET _sMedium=%_SELECTED% && SET _cMedium=%cInverted%
+	IF !_GPUQuality!==UltraHigh SET _sHigh=%_SELECTED% && SET _cHigh=%cInverted%
+	IF !_GPUQuality!==Extreme SET _sExtreme=%_SELECTED% && SET _cExtreme=%cInverted%
+	IF !_GPUQuality!==Unified SET _sUnified=%_SELECTED% && SET _cUnified=%cInverted%
 )
 
 ECHO.
@@ -265,25 +272,88 @@ ECHO Choose the Lightmass version you would like to install:
 ECHO ------------------------------------------------------
 ECHO.
 IF !RUNNING! NEQ 1 (ECHO %cSoft%0 - Backup Current Lightmass%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be backup while UnrealEd is running [DISABLED]%cReset%)
-IF !RUNNING! NEQ 1 (ECHO 1 - RESTORE CPU Lightmass !_sCPU!) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be restored until UnrealEd is closed !_sCPU! [DISABLED]%cReset%)
-ECHO %cStrong%2 - GPU Lightmass Fast Preview !_sFast!
-ECHO %cStrong%3 - GPU Lightmass Medium Quality !_sMedium!
-ECHO %cStrong%4 - GPU Lightmass Ultra High Quality !_sHigh!
-ECHO %cStrong%5 - GPU Lightmass Extreme Quality !_sExtreme!%cReset%
-ECHO %cStrong%6 - GPU Lightmass Unified Settings !_sUnified!%cReset%
-ECHO %cYellow%7 - EXIT%cReset%
+IF !RUNNING! NEQ 1 (ECHO 1 - RESTORE CPU Lightmass !_sCPU!%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be restored until UnrealEd is closed !_sCPU!%cReset% [DISABLED]%cReset%)
+ECHO !_cFast!%cStrong%2 - GPU Lightmass Fast Preview !_sFast!%cReset%
+ECHO !_cMedium!%cStrong%3 - GPU Lightmass Medium Quality !_sMedium!%cReset%
+ECHO !_cHigh!%cStrong%4 - GPU Lightmass Ultra High Quality !_sHigh!%cReset%
+ECHO !_cExtreme!%cStrong%5 - GPU Lightmass Extreme Quality !_sExtreme!%cReset%
+ECHO !_cUnified!%cStrong%6 - GPU Lightmass Unified Settings !_sUnified!%cReset%
+ECHO %cSoft%7 - Change Unified Quality Settings %cReset%
+ECHO %cSoft%8 - Open UnrealEngine Folder in Explorer %cReset%
+ECHO %cYellow%9 - EXIT%cReset%
 ECHO.
-CHOICE /C:01234567 /M "Choose your option"
+CHOICE /C:0123456789 /M "Choose your option"
 IF !ERRORLEVEL! EQU 1 CALL :BACKUP && GOTO :MENU
 IF !ERRORLEVEL! EQU 2 CALL :CPU && GOTO :MENU
 IF !ERRORLEVEL! EQU 3 CALL :Fast && GOTO :MENU
 IF !ERRORLEVEL! EQU 4 CALL :Medium && GOTO :MENU
 IF !ERRORLEVEL! EQU 5 CALL :UltraHigh && GOTO :MENU
 IF !ERRORLEVEL! EQU 6 CALL :Extreme && GOTO :MENU
-IF !ERRORLEVEL! EQU 7 CALL :Unified && GOTO :MENU
-IF !ERRORLEVEL! EQU 8 GOTO :EOF
+IF !ERRORLEVEL! EQU 7 CALL :Unified && CALL :Settings && GOTO :MENU
+IF !ERRORLEVEL! EQU 8 SET "_Loop=1" && CALL :Settings && GOTO :MENU
+IF !ERRORLEVEL! EQU 9 CALL :Explorer && GOTO :MENU
+IF !ERRORLEVEL! EQU 10 GOTO :EOF
 
 GOTO :MENU
+
+:Settings
+ECHO.
+ECHO Choose the Quality Settings to set in Baselightmass.ini:
+ECHO -------------------------------------------------------
+REM powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | Select-String -Pattern 'NumPrimaryGISamples'" >nul
+REM powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | Select-String -Pattern 'NumSecondaryGISamples'" >nul
+FINDSTR "NumPrimaryGISamples" "!pInstallDir!\Engine\Config\BaseLightmass.ini"
+FINDSTR "NumSecondaryGISamples" "!pInstallDir!\Engine\Config\BaseLightmass.ini"
+ECHO.
+ECHO %cStrong%1 - GPU Lightmass Fast Preview !_sUniFast!
+ECHO %cStrong%2 - GPU Lightmass Medium Quality !_sUniMedium!
+ECHO %cStrong%3 - GPU Lightmass Ultra High Quality !_sUniHigh!
+ECHO %cStrong%4 - GPU Lightmass Extreme Quality !_sUniExtreme!%cReset%
+ECHO %cStrong%5 - Open Baselightmass.ini in Notepad !_sUniExtreme!%cReset%
+ECHO %cYellow%9 - Go back...%cReset%
+ECHO.
+CHOICE /C:123459 /M "Choose your option"
+IF !ERRORLEVEL! EQU 1 GOTO :UniFast
+IF !ERRORLEVEL! EQU 2 GOTO :UniMedium
+IF !ERRORLEVEL! EQU 3 GOTO :UniUltra
+IF !ERRORLEVEL! EQU 4 GOTO :UniExtreme
+IF !ERRORLEVEL! EQU 5 GOTO :Notepad
+IF !ERRORLEVEL! EQU 6 EXIT /B
+EXIT /B
+
+:Notepad
+where /q notepad++
+IF !ERRORLEVEL! EQU 1 (Notepad "!pInstallDir!\Engine\Config\BaseLightmass.ini") ELSE (Notepad++ "!pInstallDir!\Engine\Config\BaseLightmass.ini")
+IF !_LOOP! EQU 1 GOTO :Settings
+EXIT /B
+
+:UniFast
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=16' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=8' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+IF !_LOOP! EQU 1 GOTO :Settings
+EXIT /B
+
+:UniMedium
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=32' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=16' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+IF !_LOOP! EQU 1 GOTO :Settings
+EXIT /B
+
+:UniUltra
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=64' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=16' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+IF !_LOOP! EQU 1 GOTO :Settings
+EXIT /B
+
+:UniExtreme
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=128' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=32' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+IF !_LOOP! EQU 1 GOTO :Settings
+EXIT /B
+
+:Explorer
+explorer %pInstallDir%
+EXIT /B
 
 :CPU
 ECHO CPU Lightmass Install
