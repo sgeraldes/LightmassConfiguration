@@ -4,7 +4,7 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 set uGPULightmass4191=https://www.dropbox.com/sh/3issyqm20wb08ts/AAAtbdIywQm7Wg_af6eEbmKRa?dl=1
 set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0Km6dBe-i_a?dl=1
 set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
-set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
+set uGPULightmass4202=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
@@ -19,27 +19,19 @@ SET cSOFT=[90m
 
 
 :MAIN
-ECHO. >test.txt
-set UnrealVersion=4.19
-ECHO. >>test.txt
-ECHO UnrealVersion=!UnrealVersion! >>test.txt
-REM REGISTRY SETTINGS
-set KEY_NAME=HKLM\Software\EpicGames\Unreal Engine\%UnrealVersion%
-set VALUE_NAME=InstalledDirectory
-CALL :GETINSTALLPATH
-CALL :Testing
-
 set UnrealVersion=4.20
-ECHO. >>test.txt
-ECHO UnrealVersion=!UnrealVersion! >>test.txt
+ECHO UnrealVersion=!UnrealVersion! >test.txt
 REM REGISTRY SETTINGS
 set KEY_NAME=HKLM\Software\EpicGames\Unreal Engine\%UnrealVersion%
 set VALUE_NAME=InstalledDirectory
+SET pathUnrealEd=Engine\Binaries\Win64\UE4Editor-UnrealEd.dll
+SET pathGPULightmass=Engine\Binaries\Win64\GPULightmassKernel.dll
+
 CALL :GETINSTALLPATH
 CALL :Testing
 
-SET pathUnrealEd=\Engine\Binaries\Win64\UE4Editor-UnrealEd.dll
-SET pathGPULightmass=\Engine\Binaries\Win64\GPULightmassKernel.dll
+SET pUnrealEd=%pathUnrealEd%
+SET pGPULightmass=%pathGPULightmass%
 
 set UnrealVersion=4.19.1
 set uGPULightmass=%uGPULightmass4191%
@@ -81,8 +73,8 @@ echo %mINFO%[1mUnreal Engine Version %UnrealVersion% is installed in: %cReset%
 echo      - !pInstallDir!
 
 REM IF EXIST !pInstallDir!\Engine\Binaries\Win64\GPULightmassKernel.dll
-SET pUnrealEd=!pInstallDir!%pathUnrealEd%
-SET pGPULightmass=!pInstallDir!%pathGPULightmass%
+SET pUnrealEd=!pInstallDir!\%pathUnrealEd%
+SET pGPULightmass=!pInstallDir!\%pathGPULightmass%
 
 EXIT /B
 
