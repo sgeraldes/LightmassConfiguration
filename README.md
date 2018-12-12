@@ -41,6 +41,8 @@ Also note: the script can't change from CPU to GPU lightmass while the Unreal Ed
 The only file that has the changes for quality, and the only file that is in any way different between the different packs, is GPULightmassKernel.dll (I did a binary compare of each file to be sure).
 
 # Updates
+UPDATE 12/11/2018 v0.3.2: Updated to work with Unified settings for UnrealEd 4.21 and 4.21.1. Updated minimum Nvidia GPU Driver Version to 411.31
+
 UPDATE 08/23/2018 v0.2: Modified to allow easier updates of the engine. Fixed some bugs. better detection of some parameters and added a fail-safe in case it fails.TDR settings now in decimal instead of hexa.
 
 UPDATE 08/23/2018 v0.2.1: The script now actually checks for driver version and warns the user if the driver does not meet the requirement. 
