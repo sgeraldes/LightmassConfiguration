@@ -5,6 +5,7 @@ set uGPULightmass4191=https://www.dropbox.com/sh/3issyqm20wb08ts/AAAtbdIywQm7Wg_
 set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0Km6dBe-i_a?dl=1
 set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
 set uGPULightmass4202=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
+set uGPULightmass421=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
@@ -19,7 +20,7 @@ SET cSOFT=[90m
 
 
 :MAIN
-set UnrealVersion=4.20
+set UnrealVersion=4.21
 ECHO UnrealVersion=!UnrealVersion! >test.txt
 REM REGISTRY SETTINGS
 set KEY_NAME=HKLM\Software\EpicGames\Unreal Engine\%UnrealVersion%
@@ -50,6 +51,11 @@ CALL :UNZIP
 
 set UnrealVersion=4.20.2
 set uGPULightmass=%uGPULightmass4202%
+CALL :DOWNLOAD
+CALL :UNZIP
+
+set UnrealVersion=4.21
+set uGPULightmass=%uGPULightmass421%
 CALL :DOWNLOAD
 CALL :UNZIP
 

@@ -3,12 +3,12 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 
 :Variables
 REM Variables that can be modified bellow
-set UnrealVersion=4.20
+set UnrealVersion=4.21
 set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
 set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
 set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
 set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
-set pUnified=GPULightmassIntegration-4.20.2-UnifiedSettings.zip
+set pUnified=GPULightmassIntegration-4.21.0-UnifiedSettings.zip
 
 REM URLS can be modified
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
@@ -18,13 +18,17 @@ set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
 set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass4202u=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass4203u=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
-set uGPULightmass=%uGPULightmass4203u%
+set uGPULightmass421u=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
+set uGPULightmass=%uGPULightmass421u%
 
 REM TDR Settings
 set iTDRValue=300
 
-REM NVIDIA DRIVER VERSION 398.26 or later required. 
+REM 4.20 requires NVIDIA DRIVER VERSION 398.26 or later required. 
 set iMinDriverVersion=2421139826
+
+REM 4.21 requires NVIDIA DRIVER VERSION 411.31 or later required. 
+set iMinDriverVersion=2421141131
 
 :FUNCTIONS
 REM HERE BE DRAGONS!
@@ -32,7 +36,7 @@ REM ...................................................................
 REM DO NOT CHANGE ANYTHING FROM HERE UNLESS YOU KNOW WHAT YOU ARE DOING
 REM ...................................................................
 
-set sScriptVersion=v0.3.1
+set sScriptVersion=v0.3.2
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
@@ -201,6 +205,7 @@ echo Engine\Binaries\Win64\UnrealLightmass-SwarmInterface.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass.exe >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-ApplicationCore.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-BuildSettings.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-Cbor.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Core.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-CoreUObject.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Json.dll >> listfile.txt
@@ -273,10 +278,10 @@ ECHO ------------------------------------------------------
 ECHO.
 IF !RUNNING! NEQ 1 (ECHO %cSoft%0 - Backup Current Lightmass%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be backup while UnrealEd is running [DISABLED]%cReset%)
 IF !RUNNING! NEQ 1 (ECHO 1 - RESTORE CPU Lightmass !_sCPU!%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be restored until UnrealEd is closed !_sCPU!%cReset% [DISABLED]%cReset%)
-ECHO !_cFast!%cStrong%2 - GPU Lightmass Fast Preview !_sFast!%cReset%
-ECHO !_cMedium!%cStrong%3 - GPU Lightmass Medium Quality !_sMedium!%cReset%
-ECHO !_cHigh!%cStrong%4 - GPU Lightmass Ultra High Quality !_sHigh!%cReset%
-ECHO !_cExtreme!%cStrong%5 - GPU Lightmass Extreme Quality !_sExtreme!%cReset%
+REM ECHO !_cFast!%cStrong%2 - GPU Lightmass Fast Preview !_sFast!%cReset%
+REM ECHO !_cMedium!%cStrong%3 - GPU Lightmass Medium Quality !_sMedium!%cReset%
+REM ECHO !_cHigh!%cStrong%4 - GPU Lightmass Ultra High Quality !_sHigh!%cReset%
+REM ECHO !_cExtreme!%cStrong%5 - GPU Lightmass Extreme Quality !_sExtreme!%cReset%
 ECHO !_cUnified!%cStrong%6 - GPU Lightmass Unified Settings !_sUnified!%cReset%
 ECHO %cSoft%7 - Change Unified Quality Settings %cReset%
 ECHO %cSoft%8 - Open UnrealEngine Folder in Explorer %cReset%
@@ -285,10 +290,10 @@ ECHO.
 CHOICE /C:0123456789 /M "Choose your option"
 IF !ERRORLEVEL! EQU 1 CALL :BACKUP && GOTO :MENU
 IF !ERRORLEVEL! EQU 2 CALL :CPU && GOTO :MENU
-IF !ERRORLEVEL! EQU 3 CALL :Fast && GOTO :MENU
-IF !ERRORLEVEL! EQU 4 CALL :Medium && GOTO :MENU
-IF !ERRORLEVEL! EQU 5 CALL :UltraHigh && GOTO :MENU
-IF !ERRORLEVEL! EQU 6 CALL :Extreme && GOTO :MENU
+REM IF !ERRORLEVEL! EQU 3 CALL :Fast && GOTO :MENU
+REM IF !ERRORLEVEL! EQU 4 CALL :Medium && GOTO :MENU
+REM IF !ERRORLEVEL! EQU 5 CALL :UltraHigh && GOTO :MENU
+REM IF !ERRORLEVEL! EQU 6 CALL :Extreme && GOTO :MENU
 IF !ERRORLEVEL! EQU 7 CALL :Unified && CALL :Settings && GOTO :MENU
 IF !ERRORLEVEL! EQU 8 SET "_Loop=1" && CALL :Settings && GOTO :MENU
 IF !ERRORLEVEL! EQU 9 CALL :Explorer && GOTO :MENU
@@ -309,16 +314,18 @@ ECHO %cStrong%1 - GPU Lightmass Fast Preview !_sUniFast!
 ECHO %cStrong%2 - GPU Lightmass Medium Quality !_sUniMedium!
 ECHO %cStrong%3 - GPU Lightmass Ultra High Quality !_sUniHigh!
 ECHO %cStrong%4 - GPU Lightmass Extreme Quality !_sUniExtreme!%cReset%
-ECHO %cStrong%5 - Open Baselightmass.ini in Notepad !_sUniExtreme!%cReset%
+ECHO %cStrong%5 - GPU Lightmass Insane Quality !_sUniExtreme!%cReset%
+ECHO %cStrong%6 - Open Baselightmass.ini in Notepad !_sUniExtreme!%cReset%
 ECHO %cYellow%9 - Go back...%cReset%
 ECHO.
-CHOICE /C:123459 /M "Choose your option"
+CHOICE /C:1234569 /M "Choose your option"
 IF !ERRORLEVEL! EQU 1 GOTO :UniFast
 IF !ERRORLEVEL! EQU 2 GOTO :UniMedium
 IF !ERRORLEVEL! EQU 3 GOTO :UniUltra
 IF !ERRORLEVEL! EQU 4 GOTO :UniExtreme
-IF !ERRORLEVEL! EQU 5 GOTO :Notepad
-IF !ERRORLEVEL! EQU 6 EXIT /B
+IF !ERRORLEVEL! EQU 5 GOTO :UniInsane
+IF !ERRORLEVEL! EQU 6 GOTO :Notepad
+IF !ERRORLEVEL! EQU 7 EXIT /B
 EXIT /B
 
 :Notepad
@@ -348,6 +355,12 @@ EXIT /B
 :UniExtreme
 powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=128' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
 powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=32' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+IF !_LOOP! EQU 1 GOTO :Settings
+EXIT /B
+
+:UniInsane
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=256' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=64' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
 IF !_LOOP! EQU 1 GOTO :Settings
 EXIT /B
 
