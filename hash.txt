@@ -47,3 +47,6 @@ UnrealVersion=4.22
 4.22:UE4Editor-UnrealEd.dll:CPU:0b98aa6bf871c7bebdd4ecad745f9fb6 
 4.22:UE4Editor-UnrealEd.dll:GPU:8a9e5224ffe76bc1008caa9bfd34ff15 [Unified]
 4.22:GPULightmassKernel.dll:Unified:a3f8184978952b1d34f47ba2a015b9ef
+
+UnrealVersion=4.22.2
+4.22:UE4Editor-UnrealEd.dll:CPU:8b4ce7b30d63409d8740ee52e393e9d5
