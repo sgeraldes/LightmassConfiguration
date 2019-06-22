@@ -50,3 +50,6 @@ UnrealVersion=4.22
 
 UnrealVersion=4.22.2
 4.22:UE4Editor-UnrealEd.dll:CPU:8b4ce7b30d63409d8740ee52e393e9d5
+
+UnrealVersion=4.22.3
+4.22:UE4Editor-UnrealEd.dll:CPU:74dd6c5c32443deb1626d1f9b88addad 
