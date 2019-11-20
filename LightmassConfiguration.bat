@@ -8,7 +8,7 @@ set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
 set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
 set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
 set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
-set pUnified=GPULightmass-UE4.23.0-release.zip
+set pUnified=GPULightmassIntegration-4.23.1-UnifiedSettings.zip
 
 
 REM URLS can be modified
@@ -21,8 +21,9 @@ set uGPULightmass4202u=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass4203u=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
 set uGPULightmass421u=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
 set uGPULightmass422u=https://dl.orangedox.com/93ekBf83FHfyK0zZbp?dl=1
-set uGPULightmass423u=https://www.dropbox.com/sh/fjr63yeutafmip9/AADb1zE1tDQiONc5zw92O9LEa/GPULightmass-UE4.23.0-release.zip?dl=1
-set uGPULightmass=%uGPULightmass423u%
+set uGPULightmass423u=https://dl.orangedox.com/QcG2N4qxn5bXfyo0VL?dl=1
+set uGPULightmass4231u=https://dl.orangedox.com/byWAUR3EZfV1aFqTXX?dl=1
+set uGPULightmass=%uGPULightmass4231u%
 
 REM TDR Settings
 set iTDRValue=300
