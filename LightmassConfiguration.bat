@@ -22,8 +22,7 @@ set uGPULightmass4203u=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassInt
 set uGPULightmass421u=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
 set uGPULightmass422u=https://dl.orangedox.com/93ekBf83FHfyK0zZbp?dl=1
 set uGPULightmass423u=https://www.dropbox.com/sh/fjr63yeutafmip9/AADb1zE1tDQiONc5zw92O9LEa/GPULightmass-UE4.23.0-release.zip?dl=1
-set uGPULightmass4231u=https://uc7f4225afdd43cd4f4cfff5508e.dl.dropboxusercontent.com/cd/0/get/AsXgsg4EmerOjalnj3Ab30wqZmQJC-7KZRxesfylnuBVcCoAy_G7402_ovMrYL2abN2rjulq_gKQ6q2KB5m68RKWQId8RCzKCMnAsEhlPJZQ6HZXnzNmu8Nq0NrG0KkebmE/file?_download_id=2655953766502577843827850414147967230632524135616070547027021258&_notify_domain=www.dropbox.com&dl=1
-set uGPULightmass424u=https://uc13b667e86edd42a4d4edc45962.dl.dropboxusercontent.com/cd/0/get/Aue3ea6dnkeEZXhpfvoaKRADc159xWtwI7BCgfrr41IoJXk2IsA9FT3RLH6dkeJc_lH5kP5ZXbyejPZF6KJcipRJySlCsKs4LwIBgyH2pN-RA5WuPySFGzipnSffFpku-dw/file?_download_id=222361052595570820493442109006465624793112799856326516086557357044&_notify_domain=www.dropbox.com&dl=1
+set uGPULightmass424u=https://www.dropbox.com/sh/58kpyl2v81aoqkk/AAASAropTqiB-n7tKMb2ckr0a/GPULightmass-UE4.24.0.zip?dl=1
 set uGPULightmass=%uGPULightmass424u%
 
 REM TDR Settings
