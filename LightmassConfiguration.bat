@@ -21,7 +21,8 @@ set uGPULightmass4202u=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass4203u=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
 set uGPULightmass421u=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
 set uGPULightmass422u=https://dl.orangedox.com/93ekBf83FHfyK0zZbp?dl=1
-set uGPULightmass423u=https://www.dropbox.com/sh/fjr63yeutafmip9/AADb1zE1tDQiONc5zw92O9LEa/GPULightmass-UE4.23.0-release.zip?dl=1
+set uGPULightmass423u=https://dl.orangedox.com/QcG2N4qxn5bXfyo0VL?dl=1
+set uGPULightmass4231u=https://dl.orangedox.com/byWAUR3EZfV1aFqTXX?dl=1
 set uGPULightmass424u=https://www.dropbox.com/sh/58kpyl2v81aoqkk/AAASAropTqiB-n7tKMb2ckr0a/GPULightmass-UE4.24.0.zip?dl=1
 set uGPULightmass=%uGPULightmass424u%
 
