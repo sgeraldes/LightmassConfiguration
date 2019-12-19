@@ -3,12 +3,12 @@ SETLOCAL ENABLEDELAYEDEXPANSION
 
 :Variables
 REM Variables that can be modified bellow
-set UnrealVersion=4.23
+set UnrealVersion=4.24
 set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
 set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
 set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
 set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
-set pUnified=GPULightmassIntegration-4.23.1-UnifiedSettings.zip
+set pUnified=GPULightmass-UE4.24.0.zip
 
 
 REM URLS can be modified
@@ -23,7 +23,8 @@ set uGPULightmass421u=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
 set uGPULightmass422u=https://dl.orangedox.com/93ekBf83FHfyK0zZbp?dl=1
 set uGPULightmass423u=https://dl.orangedox.com/QcG2N4qxn5bXfyo0VL?dl=1
 set uGPULightmass4231u=https://dl.orangedox.com/byWAUR3EZfV1aFqTXX?dl=1
-set uGPULightmass=%uGPULightmass4231u%
+set uGPULightmass424u=https://www.dropbox.com/sh/58kpyl2v81aoqkk/AAASAropTqiB-n7tKMb2ckr0a/GPULightmass-UE4.24.0.zip?dl=1
+set uGPULightmass=%uGPULightmass424u%
 
 REM TDR Settings
 set iTDRValue=300
