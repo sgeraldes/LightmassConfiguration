@@ -8,7 +8,8 @@ set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
 set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
 set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
 set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
-set pUnified=GPULightmass-UE4.24.0.zip
+REM set pUnified=GPULightmass-UE4.24.1.zip
+set pUnified=GPULightmassIntegration-4.24.1-UnifiedSettings.zip
 
 
 REM URLS can be modified
@@ -19,12 +20,14 @@ set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
 set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass4202u=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
 set uGPULightmass4203u=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
-set uGPULightmass421u=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
-set uGPULightmass422u=https://dl.orangedox.com/93ekBf83FHfyK0zZbp?dl=1
+set uGPULightmass421u=https://dl.orangedox.com/IuEQEanlm9gosWcBBK?dl=1
+set uGPULightmass422u=https://dl.orangedox.com/zSUjlBFR2OLuUfcGse?dl=1
 set uGPULightmass423u=https://dl.orangedox.com/QcG2N4qxn5bXfyo0VL?dl=1
 set uGPULightmass4231u=https://dl.orangedox.com/byWAUR3EZfV1aFqTXX?dl=1
-set uGPULightmass424u=https://www.dropbox.com/sh/58kpyl2v81aoqkk/AAASAropTqiB-n7tKMb2ckr0a/GPULightmass-UE4.24.0.zip?dl=1
-set uGPULightmass=%uGPULightmass424u%
+set uGPULightmass424u=https://dl.orangedox.com/cYwXxmgaur0vOrQzHH?dl=1
+set uGPULightmass4241u=https://dl.orangedox.com/QVRpJRuW3iRweVJ9UA?dl=1
+set uGPULightmass=%uGPULightmass4241u%
+
 
 REM TDR Settings
 set iTDRValue=300
@@ -167,9 +170,9 @@ IF NOT EXIST !pUnified! (
 	ECHO Downloading GPU Lightmass, this can take a while. Please wait...
 	powershell -Command "Invoke-WebRequest %uGPULightmass% -OutFile %UnrealVersion%.zip"
 	powershell -Command "Expand-Archive -LiteralPath %UnrealVersion%.zip -DestinationPath ."
-	IF !ERRORLEVEL! EQU 0 (del %UnrealVersion%.zip /q) ELSE (ECHO %mERROR%%cRED%ERROR DOWNLOADING. ERRORLEVEL: !ERRORLEVEL!%cReset%)
+	IF !ERRORLEVEL! EQU 0 (del %UnrealVersion%.zip /q) ELSE (ECHO %mERROR%%cRED%ERROR DOWNLOADING: %uGPULightmass% ERRORLEVEL: !ERRORLEVEL!%cReset%)
 	echo.
-	IF EXIST !pUnified! (ECHO %mINFO%DOWNLOAD COMPLETE.) ELSE (ECHO %mERROR%%cRED%DOWNLOAD ERROR.%cReset%)
+	IF EXIST %pUnified% (ECHO %mINFO%DOWNLOAD COMPLETE.) ELSE (ECHO %mERROR%%cRED%DOWNLOAD ERROR: !pUnified! %cReset%)
 ) ELSE (
 	ECHO %mINFO%%cGREEN%GPULightmass is already downloaded.%cReset%
 )

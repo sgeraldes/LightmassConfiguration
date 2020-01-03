@@ -5,11 +5,12 @@ set uGPULightmass4191=https://www.dropbox.com/sh/3issyqm20wb08ts/AAAtbdIywQm7Wg_
 set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0Km6dBe-i_a?dl=1
 set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
 set uGPULightmass4202=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
-set uGPULightmass421=https://dl.orangedox.com/YtozAlX0QCNN57KXT2?dl=1
-set uGPULightmass422=https://dl.orangedox.com/93ekBf83FHfyK0zZbp?dl=1
+set uGPULightmass421=https://dl.orangedox.com/IuEQEanlm9gosWcBBK?dl=1
+set uGPULightmass422=https://dl.orangedox.com/zSUjlBFR2OLuUfcGse?dl=1
 set uGPULightmass423=https://dl.orangedox.com/QcG2N4qxn5bXfyo0VL?dl=1
 set uGPULightmass4231=https://dl.orangedox.com/byWAUR3EZfV1aFqTXX?dl=1
-set uGPULightmass424=https://www.dropbox.com/sh/58kpyl2v81aoqkk/AAASAropTqiB-n7tKMb2ckr0a/GPULightmass-UE4.24.0.zip?dl=1
+set uGPULightmass424=https://dl.orangedox.com/cYwXxmgaur0vOrQzHH?dl=1
+set uGPULightmass4241=https://dl.orangedox.com/QVRpJRuW3iRweVJ9UA?dl=1
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
@@ -83,6 +84,11 @@ set uGPULightmass=%uGPULightmass424%
 CALL :DOWNLOAD
 CALL :UNZIP
 
+set UnrealVersion=4.24.1
+set uGPULightmass=%uGPULightmass4241%
+CALL :DOWNLOAD
+CALL :UNZIP
+
 ECHO.
 ECHO ALL DONE. Have a good day!
 TIMEOUT 3 >NUL
@@ -110,9 +116,10 @@ SET pGPULightmass=!pInstallDir!\%pathGPULightmass%
 EXIT /B
 
 :DOWNLOAD
-IF EXIST %UnrealVersion%.zip ECHO FILE %UnrealVersion%.zip EXISTS and NO NEED TO DOWNLOAD && EXIT /B
+IF EXIST %UnrealVersion%.zip ECHO FILE %UnrealVersion%.zip EXISTS and NO NEED TO DOWNLOAD && GOTO :EXPANDIT
 ECHO Downloading GPU Lightmass, this can take a while. Please wait...
 powershell -Command "Invoke-WebRequest !uGPULightmass! -OutFile !UnrealVersion!.zip"
+:EXPANDIT
 powershell -Command "Expand-Archive -LiteralPath !UnrealVersion!.zip -DestinationPath . -Force"
 REM IF %ERRORLEVEL% EQU 0 (del %UnrealVersion%.zip /q) ELSE (ECHO %mERROR%%cRED%ERROR DOWNLOADING. ERRORLEVEL: %ERRORLEVEL%%cReset%)
 echo.
