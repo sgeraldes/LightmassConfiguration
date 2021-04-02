@@ -1,6 +1,10 @@
 # LightmassConfiguration
 LightmassConfiguration is a script made for Unreal Engine 4 to allow to change from Unreal's CPU Lightmass to GPU Lightmass (made by Luoshuang for the Unreal Forums) and back. Since there are no options in GPU Lightmass, the script also allows anyone to change bake quality levels without the need to even restart Unreal Editor. 
 
+If you'd like to support my work, you can donate in my patreon page here: https://www.patreon.com/LightmassConfigurator
+
+You can donate from $1 to $15 and any donation will be used to keep this script up-to-date.
+
 # Usage
 To use:
 - Simply download [LightmassConfiguration.zip](https://github.com/sgeraldes/LightmassConfiguration/archive/master.zip) and decompress to any folder (empty is better)
