@@ -1,50 +1,51 @@
 @ECHO OFF
-SETLOCAL ENABLEDELAYEDEXPANSION
+SETLOCAL EnableExtensions ENABLEDELAYEDEXPANSION
 
 :Variables
-REM Variables that can be modified bellow
+REM **** Variables that can be modified bellow ****
+REM VARIABLE: UnrealVersion. You can choose your version if you have more than one installed 
+REM or want to target an specific release. Supported versions starts with UE 4.24 and up to 4.26 so far.
+REM Defaul is: set UnrealVersion=4.24.
 set UnrealVersion=4.24
-set pFastPreview=GPULightmassIntegration-4.20.2-FastPreview.zip
-set pMedium=GPULightmassIntegration-4.20.2-MediumQuality.zip
-set pUltraHigh=GPULightmassIntegration-4.20.2-UltraHigh.zip
-set pExtreme=GPULightmassIntegration-4.20.2-Extreme.zip
-REM set pUnified=GPULightmass-UE4.24.1.zip
-set pUnified=GPULightmassIntegration-4.24.1-UnifiedSettings.zip
 
+REM VARIABLE: pUnified. The name of the file that's going to be downloaded for this version
+REM DEFAULT: set pUnified=GPULightmass-UE4.24.1.zip
+set pUnified=GPULightmass-UE4.24.3-release.zip
 
-REM URLS can be modified
+REM Download URLS can be modified. This URLs contian the GPU Lightmass for a particular version.
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
-set uGPULightmass4191=https://www.dropbox.com/sh/3issyqm20wb08ts/AAAtbdIywQm7Wg_af6eEbmKRa?dl=1
-set uGPULightmass4192=https://www.dropbox.com/sh/nkte4fotkczd7vy/AAAHMrzKvwiJww0Km6dBe-i_a?dl=1
-set uGPULightmass4201=https://dl.orangedox.com/gjD37r7TcxMV4jqx9U?dl=1
-set uGPULightmass4202=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
-set uGPULightmass4202u=https://dl.orangedox.com/P02pizph3hSVF1OtSJ?dl=1
-set uGPULightmass4203u=https://www.dropbox.com/s/8x2w3b4iamj81ac/GPULightmassIntegration-4.20.2.zip?dl=1
-set uGPULightmass421u=https://dl.orangedox.com/IuEQEanlm9gosWcBBK?dl=1
-set uGPULightmass422u=https://dl.orangedox.com/zSUjlBFR2OLuUfcGse?dl=1
-set uGPULightmass423u=https://dl.orangedox.com/QcG2N4qxn5bXfyo0VL?dl=1
-set uGPULightmass4231u=https://dl.orangedox.com/byWAUR3EZfV1aFqTXX?dl=1
 set uGPULightmass424u=https://dl.orangedox.com/cYwXxmgaur0vOrQzHH?dl=1
 set uGPULightmass4241u=https://dl.orangedox.com/QVRpJRuW3iRweVJ9UA?dl=1
-set uGPULightmass=%uGPULightmass4241u%
-
+set uGPULightmass4243u=https://dl.orangedox.com/y3qGXLCstPo1DggwKA?dl=1
+set uGPULightmass4254u=https://dl.orangedox.com/7fPK2NJ1Jmx3s8Gtv5?dl=1
+set uGPULightmass426u=https://dl.orangedox.com/KAsDFVpPgoRHoXXtsJ?dl=1
+set uGPULightmass4261u=https://dl.orangedox.com/RiBB5lkdyBuxsXJpNH?dl=1
+set uGPULightmass4262u=https://dl.orangedox.com/6wS2UhrnsHeFEsZAIp?dl=1
+set uGPULightmass=%uGPULightmass4243u%
 
 REM TDR Settings
 set iTDRValue=300
-
-REM 4.20 requires NVIDIA DRIVER VERSION 398.26 or later required. 
-set iMinDriverVersion=2421139826
-
-REM 4.21 requires NVIDIA DRIVER VERSION 411.31 or later required. 
-set iMinDriverVersion=2421141131
 
 :FUNCTIONS
 REM HERE BE DRAGONS!
 REM ...................................................................
 REM DO NOT CHANGE ANYTHING FROM HERE UNLESS YOU KNOW WHAT YOU ARE DOING
 REM ...................................................................
+REM 
+set sScriptVersion=v0.3.4
+REM 4.20 requires NVIDIA DRIVER VERSION 398.26 or later required. 
+set iMinDriverVersion_420=2421139826
+REM 4.21 requires NVIDIA DRIVER VERSION 411.31 or later required. 
+set iMinDriverVersion_421=2421141131
 
-set sScriptVersion=v0.3.2
+REM Remove dots from Version Variable
+set uVersion=%UnrealVersion:.=% 
+
+If %uVersion% GTR 420 (
+	set iMinDriverVersion=%iMinDriverVersion_421%
+) ELSE (
+	set iMinDriverVersion=%iMinDriverVersion_421%
+)
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
@@ -86,11 +87,25 @@ fsutil dirty query %systemdrive% >nul
 REM --> If error flag set, we do not have admin.
 if '%errorlevel%' NEQ '0' (
     echo Requesting administrative privileges...
-	echo.
+    echo.
     echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
     echo UAC.ShellExecute "%~s0", "", "", "runas", 1 >> "%temp%\getadmin.vbs"
 
-    cscript "%temp%\getadmin.vbs"
+    cscript "%temp%\getadmin.vbs" >nul
+
+    if %ERRORLEVEL% EQU 1 (
+		  ECHO Cannot obtain Admin as CScript is disabled.
+		  ECHO.
+        ECHO Please run again with Administrator access OR
+		  ECHO.
+        ECHO Change "Enabled" to "1" in Registry at HKLM\SOFTWARE\Microsoft\Windows Script Host\Settings
+		  ECHO.
+		  ECHO NOW TRYING WITH powershell
+		  ECHO.
+		  cd /d "%~dp0"
+        mshta "javascript:var shell=new ActiveXObject('shell.application');shell.ShellExecute('%~nx0','','','runas',1);close();"
+        EXIT
+    )
     exit
 ) else ( 
     REM Cleanning up...
@@ -107,6 +122,10 @@ IF NOT EXIST 7za.exe (
 	powershell -Command "Expand-Archive -LiteralPath 7za.zip -DestinationPath ."
 	del /q 7za.zip >nul
 )
+EXIT /B
+
+:VERSION
+REM STUB FUNCTION FOR DETECTING VERSION (major, minor, patch) AND PROVIDING A MENU TO CHOOSE FROM
 EXIT /B
 
 :HEADER
@@ -284,28 +303,20 @@ ECHO.
 ECHO Choose the Lightmass version you would like to install:
 ECHO ------------------------------------------------------
 ECHO.
-IF !RUNNING! NEQ 1 (ECHO %cSoft%0 - Backup Current Lightmass%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be backup while UnrealEd is running [DISABLED]%cReset%)
-IF !RUNNING! NEQ 1 (ECHO 1 - RESTORE CPU Lightmass !_sCPU!%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be restored until UnrealEd is closed !_sCPU!%cReset% [DISABLED]%cReset%)
-REM ECHO !_cFast!%cStrong%2 - GPU Lightmass Fast Preview !_sFast!%cReset%
-REM ECHO !_cMedium!%cStrong%3 - GPU Lightmass Medium Quality !_sMedium!%cReset%
-REM ECHO !_cHigh!%cStrong%4 - GPU Lightmass Ultra High Quality !_sHigh!%cReset%
-REM ECHO !_cExtreme!%cStrong%5 - GPU Lightmass Extreme Quality !_sExtreme!%cReset%
-ECHO !_cUnified!%cStrong%6 - GPU Lightmass Unified Settings !_sUnified!%cReset%
-ECHO %cSoft%7 - Change Unified Quality Settings %cReset%
-ECHO %cSoft%8 - Open UnrealEngine Folder in Explorer %cReset%
+IF !RUNNING! NEQ 1 (ECHO %cSoft%1 - Backup Current Lightmass%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be backup while UnrealEd is running [DISABLED]%cReset%)
+IF !RUNNING! NEQ 1 (ECHO 2 - RESTORE CPU Lightmass !_sCPU!%cReset%) ELSE (ECHO %mWARN%%cSoft%CPU LIGHTMASS Cannot be restored until UnrealEd is closed !_sCPU!%cReset% [DISABLED]%cReset%)
+ECHO !_cUnified!%cStrong%3 - Install GPU Lightmass with Unified Settings !_sUnified!%cReset%
+ECHO %cSoft%4 - Change Unified Quality Settings %cReset%
+ECHO %cSoft%5 - Open UnrealEngine Folder in Explorer %cReset%
 ECHO %cYellow%9 - EXIT%cReset%
 ECHO.
-CHOICE /C:0123456789 /M "Choose your option"
+CHOICE /C:123459 /M "Choose your option"
 IF !ERRORLEVEL! EQU 1 CALL :BACKUP && GOTO :MENU
 IF !ERRORLEVEL! EQU 2 CALL :CPU && GOTO :MENU
-REM IF !ERRORLEVEL! EQU 3 CALL :Fast && GOTO :MENU
-REM IF !ERRORLEVEL! EQU 4 CALL :Medium && GOTO :MENU
-REM IF !ERRORLEVEL! EQU 5 CALL :UltraHigh && GOTO :MENU
-REM IF !ERRORLEVEL! EQU 6 CALL :Extreme && GOTO :MENU
-IF !ERRORLEVEL! EQU 7 CALL :Unified && CALL :Settings && GOTO :MENU
-IF !ERRORLEVEL! EQU 8 SET "_Loop=1" && CALL :Settings && GOTO :MENU
-IF !ERRORLEVEL! EQU 9 CALL :Explorer && GOTO :MENU
-IF !ERRORLEVEL! EQU 10 GOTO :EOF
+IF !ERRORLEVEL! EQU 3 CALL :Unified && CALL :Settings && GOTO :MENU
+IF !ERRORLEVEL! EQU 4 SET "_Loop=1" && CALL :Settings && GOTO :MENU
+IF !ERRORLEVEL! EQU 5 CALL :Explorer && GOTO :MENU
+IF !ERRORLEVEL! EQU 6 GOTO :EOF
 
 GOTO :MENU
 

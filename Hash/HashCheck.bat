@@ -11,6 +11,11 @@ set uGPULightmass423=https://dl.orangedox.com/QcG2N4qxn5bXfyo0VL?dl=1
 set uGPULightmass4231=https://dl.orangedox.com/byWAUR3EZfV1aFqTXX?dl=1
 set uGPULightmass424=https://dl.orangedox.com/cYwXxmgaur0vOrQzHH?dl=1
 set uGPULightmass4241=https://dl.orangedox.com/QVRpJRuW3iRweVJ9UA?dl=1
+set uGPULightmass4243=https://dl.orangedox.com/y3qGXLCstPo1DggwKA?dl=1
+set uGPULightmass4254=https://dl.orangedox.com/7fPK2NJ1Jmx3s8Gtv5?dl=1
+set uGPULightmass426=https://dl.orangedox.com/KAsDFVpPgoRHoXXtsJ?dl=1
+set uGPULightmass4261=https://dl.orangedox.com/RiBB5lkdyBuxsXJpNH?dl=1
+set uGPULightmass4262=https://dl.orangedox.com/6wS2UhrnsHeFEsZAIp?dl=1
 
 REM CONSOLE COLORS AND MESSAGES
 SET mERROR=[31m[7mERRO[0m: 
@@ -25,7 +30,8 @@ SET cSOFT=[90m
 
 
 :MAIN
-set UnrealVersion=4.24
+REM Use UnrealVersion=Any to autodetect installed versions and offer to change versions
+set UnrealVersion=4.26
 ECHO UnrealVersion=!UnrealVersion! >test.txt
 REM REGISTRY SETTINGS
 set KEY_NAME=HKLM\Software\EpicGames\Unreal Engine\%UnrealVersion%
@@ -89,6 +95,32 @@ set uGPULightmass=%uGPULightmass4241%
 CALL :DOWNLOAD
 CALL :UNZIP
 
+set UnrealVersion=4.24.3
+set uGPULightmass=%uGPULightmass4243%
+CALL :DOWNLOAD
+CALL :UNZIP
+
+set UnrealVersion=4.25.4
+set uGPULightmass=%uGPULightmass4254%
+CALL :DOWNLOAD
+CALL :UNZIP
+
+set UnrealVersion=4.26.0
+set uGPULightmass=%uGPULightmass426%
+CALL :DOWNLOAD
+CALL :UNZIP
+
+set UnrealVersion=4.26.1
+set uGPULightmass=%uGPULightmass4261%
+CALL :DOWNLOAD
+CALL :UNZIP
+
+set UnrealVersion=4.26.2
+set uGPULightmass=%uGPULightmass4262%
+CALL :DOWNLOAD
+CALL :UNZIP
+
+
 ECHO.
 ECHO ALL DONE. Have a good day!
 TIMEOUT 3 >NUL
@@ -131,7 +163,7 @@ EXIT /B
 :UNZIP
 ECHO. >>test.txt
 ECHO UnrealVersion=!UnrealVersion! >>test.txt
-FOR /f "tokens=*" %%G IN ('dir GPULightmassIntegration-!UnrealVersion!*.zip ^/b') DO (
+FOR /f "tokens=*" %%G IN ('dir GPULightmass*!UnrealVersion!*.zip ^/b') DO (
 	rmdir Engine /S /Q
 	7za x %%G Engine\Binaries\Win64\UE4Editor-UnrealEd.dll >nul
 	7za x %%G Engine\Binaries\Win64\GPULightmassKernel.dll >nul
