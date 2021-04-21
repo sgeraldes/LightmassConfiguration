@@ -6,11 +6,11 @@ REM **** Variables that can be modified bellow ****
 REM VARIABLE: UnrealVersion. You can choose your version if you have more than one installed 
 REM or want to target an specific release. Supported versions starts with UE 4.24 and up to 4.26 so far.
 REM Defaul is: set UnrealVersion=4.24.
-set UnrealVersion=4.24
+set UnrealVersion=4.25
 
 REM VARIABLE: pUnified. The name of the file that's going to be downloaded for this version
 REM DEFAULT: set pUnified=GPULightmass-UE4.24.1.zip
-set pUnified=GPULightmass-UE4.24.3-release.zip
+set pUnified=GPULightmass-UE4.25.4-release.zip
 
 REM Download URLS can be modified. This URLs contian the GPU Lightmass for a particular version.
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
@@ -21,10 +21,27 @@ set uGPULightmass4254u=https://dl.orangedox.com/7fPK2NJ1Jmx3s8Gtv5?dl=1
 set uGPULightmass426u=https://dl.orangedox.com/KAsDFVpPgoRHoXXtsJ?dl=1
 set uGPULightmass4261u=https://dl.orangedox.com/RiBB5lkdyBuxsXJpNH?dl=1
 set uGPULightmass4262u=https://dl.orangedox.com/6wS2UhrnsHeFEsZAIp?dl=1
-set uGPULightmass=%uGPULightmass4243u%
+set uGPULightmass=%uGPULightmass4254u%
 
 REM TDR Settings
 set iTDRValue=300
+
+REM SETTINGS FOR LIGHT BUILD QUALITY
+:: FAST
+SET FastNumPrimaryGISamples=16
+SET FastNumSecondaryGISamples=8
+:: MEDIUM
+SET MediumNumPrimaryGISamples=32
+SET MediumNumSecondaryGISamples=16
+:: ULTRA
+SET UltraNumPrimaryGISamples=64
+SET UltraNumSecondaryGISamples=16
+:: EXTREME
+SET ExtremeNumPrimaryGISamples=128
+SET ExtremeNumSecondaryGISamples=32
+:: INSANE
+SET InsaneNumPrimaryGISamples=256
+SET InsaneNumSecondaryGISamples=64
 
 :FUNCTIONS
 REM HERE BE DRAGONS!
@@ -313,7 +330,7 @@ ECHO.
 CHOICE /C:123459 /M "Choose your option"
 IF !ERRORLEVEL! EQU 1 CALL :BACKUP && GOTO :MENU
 IF !ERRORLEVEL! EQU 2 CALL :CPU && GOTO :MENU
-IF !ERRORLEVEL! EQU 3 CALL :Unified && CALL :Settings && GOTO :MENU
+IF !ERRORLEVEL! EQU 3 SET InstallVersion=%pUnified% && CALL :INSTALL && CALL :Settings && GOTO :MENU
 IF !ERRORLEVEL! EQU 4 SET "_Loop=1" && CALL :Settings && GOTO :MENU
 IF !ERRORLEVEL! EQU 5 CALL :Explorer && GOTO :MENU
 IF !ERRORLEVEL! EQU 6 GOTO :EOF
@@ -338,11 +355,11 @@ ECHO %cStrong%6 - Open Baselightmass.ini in Notepad !_sUniExtreme!%cReset%
 ECHO %cYellow%9 - Go back...%cReset%
 ECHO.
 CHOICE /C:1234569 /M "Choose your option"
-IF !ERRORLEVEL! EQU 1 GOTO :UniFast
-IF !ERRORLEVEL! EQU 2 GOTO :UniMedium
-IF !ERRORLEVEL! EQU 3 GOTO :UniUltra
-IF !ERRORLEVEL! EQU 4 GOTO :UniExtreme
-IF !ERRORLEVEL! EQU 5 GOTO :UniInsane
+IF !ERRORLEVEL! EQU 1 NumPrimaryGISamples=!FastNumPrimaryGISamples! && NumSecondaryGISamples=!FastNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 2 NumPrimaryGISamples=!MediumNumPrimaryGISamples! && NumSecondaryGISamples=!MediumNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 3 NumPrimaryGISamples=!UltraNumPrimaryGISamples! && NumSecondaryGISamples=!UltraNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 4 NumPrimaryGISamples=!ExtremeNumPrimaryGISamples! && NumSecondaryGISamples=!ExtremeExtremeNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 5 NumPrimaryGISamples=!InsaneNumPrimaryGISamples! && NumSecondaryGISamples=!InsaneNumPrimaryGISamples! && GOTO :ReplaceSettings
 IF !ERRORLEVEL! EQU 6 GOTO :Notepad
 IF !ERRORLEVEL! EQU 7 EXIT /B
 EXIT /B
@@ -353,33 +370,9 @@ IF !ERRORLEVEL! EQU 1 (Notepad "!pInstallDir!\Engine\Config\BaseLightmass.ini") 
 IF !_LOOP! EQU 1 GOTO :Settings
 EXIT /B
 
-:UniFast
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=16' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=8' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-IF !_LOOP! EQU 1 GOTO :Settings
-EXIT /B
-
-:UniMedium
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=32' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=16' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-IF !_LOOP! EQU 1 GOTO :Settings
-EXIT /B
-
-:UniUltra
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=64' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=16' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-IF !_LOOP! EQU 1 GOTO :Settings
-EXIT /B
-
-:UniExtreme
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=128' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=32' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-IF !_LOOP! EQU 1 GOTO :Settings
-EXIT /B
-
-:UniInsane
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=256' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
-powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=64' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+:ReplaceSettings
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumPrimaryGISamples=.*','NumPrimaryGISamples=!NumPrimaryGISamples!' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
+powershell -Command "(Get-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini') | ForEach-Object { $_ -replace 'NumSecondaryGISamples=.*','NumSecondaryGISamples=!NumSecondaryGISamples!' } | Set-Content '!pInstallDir!\Engine\Config\BaseLightmass.ini'"
 IF !_LOOP! EQU 1 GOTO :Settings
 EXIT /B
 
@@ -399,26 +392,6 @@ IF EXIST set CPULightmass-%UnrealVersion%.zip (
 )
 ECHO %mERROR%%cRED%Can't find %InstallVersion%. CPU Lightmass won't be restored.%cReset%
 EXIT /B
-
-:Fast
-Set InstallVersion=%pFastPreview% 
-GOTO INSTALL
-
-:Medium
-Set InstallVersion=%pMedium%
-GOTO INSTALL
-
-:UltraHigh
-Set InstallVersion=%pUltraHigh%
-GOTO INSTALL
-
-:Extreme
-set InstallVersion=%pExtreme%
-GOTO INSTALL
-
-:Unified
-set InstallVersion=%pUnified%
-GOTO INSTALL
 
 :INSTALL
 IF !NOTINSTALLED! EQU 1 (

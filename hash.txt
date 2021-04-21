@@ -49,10 +49,10 @@ UnrealVersion=4.22
 4.22:GPULightmassKernel.dll:Unified:a3f8184978952b1d34f47ba2a015b9ef
 
 UnrealVersion=4.22.2
-4.22:UE4Editor-UnrealEd.dll:CPU:8b4ce7b30d63409d8740ee52e393e9d5
+4.22.2:UE4Editor-UnrealEd.dll:CPU:8b4ce7b30d63409d8740ee52e393e9d5
 
 UnrealVersion=4.22.3
-4.22:UE4Editor-UnrealEd.dll:CPU:74dd6c5c32443deb1626d1f9b88addad 
+4.22.3:UE4Editor-UnrealEd.dll:CPU:74dd6c5c32443deb1626d1f9b88addad 
 
 UnrealVersion=4.23
 4.23:UE4Editor-UnrealEd.dll:GPU:e50815c00a7b944164471c5ef15d9497 [Unified]
@@ -67,11 +67,11 @@ UnrealVersion=4.24
 4.24:UE4Editor-UnrealEd.dll:GPU:810ddc8bc05f8527a70ded6c5211c700 [Unified]
 
 UnrealVersion=4.24.1
-4.24:UE4Editor-UnrealEd.dll:CPU:f401346f2720e26dfbaf3866b767d97e
-4.24:UE4Editor-UnrealEd.dll:GPU:60da525a7de6350758e0d81a2893a1d6 [Unified]
+4.24.1:UE4Editor-UnrealEd.dll:CPU:f401346f2720e26dfbaf3866b767d97e
+4.24.1:UE4Editor-UnrealEd.dll:GPU:60da525a7de6350758e0d81a2893a1d6 [Unified]
 
 UnrealVersion=4.24.3
-4.24:UE4Editor-UnrealEd.dll:CPU:3f5fee308af0fda374e7f6bbc5f0cc79 
+4.24.3:UE4Editor-UnrealEd.dll:CPU:3f5fee308af0fda374e7f6bbc5f0cc79 
 4.24.3:UE4Editor-UnrealEd.dll:GPU:aa218a5284d3c22604d78916b4820d73 [Unified]
 
 UnrealVersion=4.25.4
@@ -85,5 +85,5 @@ UnrealVersion=4.26.1
  
 UnrealVersion=4.26.2 
  
-4.26:UE4Editor-UnrealEd.dll:CPU:fcb19771c1d77af4b4f228a23359ac82 
+4.26.2:UE4Editor-UnrealEd.dll:CPU:fcb19771c1d77af4b4f228a23359ac82 
 4.26.2:UE4Editor-UnrealEd.dll:GPU:07d3fb0171e42b305bdb3e174f1a5368 [Unified]
