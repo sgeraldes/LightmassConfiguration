@@ -6,11 +6,11 @@ REM **** Variables that can be modified bellow ****
 REM VARIABLE: UnrealVersion. You can choose your version if you have more than one installed 
 REM or want to target an specific release. Supported versions starts with UE 4.24 and up to 4.26 so far.
 REM Defaul is: set UnrealVersion=4.24.
-set UnrealVersion=4.25
+set UnrealVersion=4.26
 
 REM VARIABLE: pUnified. The name of the file that's going to be downloaded for this version
 REM DEFAULT: set pUnified=GPULightmass-UE4.24.1.zip
-set pUnified=GPULightmass-UE4.25.4-release.zip
+set pUnified=GPULightmass-UE4.26.2-release.zip
 
 REM Download URLS can be modified. This URLs contian the GPU Lightmass for a particular version.
 set u7ZIP=https://www.7-zip.org/a/7za920.zip
@@ -21,7 +21,7 @@ set uGPULightmass4254u=https://dl.orangedox.com/7fPK2NJ1Jmx3s8Gtv5?dl=1
 set uGPULightmass426u=https://dl.orangedox.com/KAsDFVpPgoRHoXXtsJ?dl=1
 set uGPULightmass4261u=https://dl.orangedox.com/RiBB5lkdyBuxsXJpNH?dl=1
 set uGPULightmass4262u=https://dl.orangedox.com/6wS2UhrnsHeFEsZAIp?dl=1
-set uGPULightmass=%uGPULightmass4254u%
+set uGPULightmass=%uGPULightmass4262u%
 
 REM TDR Settings
 set iTDRValue=300
@@ -254,11 +254,13 @@ echo Engine\Binaries\Win64\UnrealLightmass-Core.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-CoreUObject.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Json.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Messaging.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-NetCommon.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Networking.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Projects.dll >> listfile.txt
-echo Engine\Binaries\Win64\UnrealLightmass-SandboxFile.dll >> listfile.txt
+REM echo Engine\Binaries\Win64\UnrealLightmass-SandboxFile.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Serialization.dll >> listfile.txt
 echo Engine\Binaries\Win64\UnrealLightmass-Sockets.dll >> listfile.txt
+echo Engine\Binaries\Win64\UnrealLightmass-TraceLog.dll >> listfile.txt
 echo Engine\Binaries\Win64\UE4Editor-UnrealEd.dll >> listfile.txt
 SET ZIPPATH=%CD%
 PUSHD !pInstallDir!
@@ -355,11 +357,11 @@ ECHO %cStrong%6 - Open Baselightmass.ini in Notepad !_sUniExtreme!%cReset%
 ECHO %cYellow%9 - Go back...%cReset%
 ECHO.
 CHOICE /C:1234569 /M "Choose your option"
-IF !ERRORLEVEL! EQU 1 NumPrimaryGISamples=!FastNumPrimaryGISamples! && NumSecondaryGISamples=!FastNumPrimaryGISamples! && GOTO :ReplaceSettings
-IF !ERRORLEVEL! EQU 2 NumPrimaryGISamples=!MediumNumPrimaryGISamples! && NumSecondaryGISamples=!MediumNumPrimaryGISamples! && GOTO :ReplaceSettings
-IF !ERRORLEVEL! EQU 3 NumPrimaryGISamples=!UltraNumPrimaryGISamples! && NumSecondaryGISamples=!UltraNumPrimaryGISamples! && GOTO :ReplaceSettings
-IF !ERRORLEVEL! EQU 4 NumPrimaryGISamples=!ExtremeNumPrimaryGISamples! && NumSecondaryGISamples=!ExtremeExtremeNumPrimaryGISamples! && GOTO :ReplaceSettings
-IF !ERRORLEVEL! EQU 5 NumPrimaryGISamples=!InsaneNumPrimaryGISamples! && NumSecondaryGISamples=!InsaneNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 1 SET NumPrimaryGISamples=!FastNumPrimaryGISamples! && SET NumSecondaryGISamples=!FastNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 2 SET NumPrimaryGISamples=!MediumNumPrimaryGISamples! && SET NumSecondaryGISamples=!MediumNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 3 SET NumPrimaryGISamples=!UltraNumPrimaryGISamples! && SET NumSecondaryGISamples=!UltraNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 4 SET NumPrimaryGISamples=!ExtremeNumPrimaryGISamples! && SET NumSecondaryGISamples=!ExtremeExtremeNumPrimaryGISamples! && GOTO :ReplaceSettings
+IF !ERRORLEVEL! EQU 5 SET NumPrimaryGISamples=!InsaneNumPrimaryGISamples! && SET NumSecondaryGISamples=!InsaneNumPrimaryGISamples! && GOTO :ReplaceSettings
 IF !ERRORLEVEL! EQU 6 GOTO :Notepad
 IF !ERRORLEVEL! EQU 7 EXIT /B
 EXIT /B
